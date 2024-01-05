@@ -1,0 +1,25 @@
+CREATE TABLE Product (prod_id int(4) PRIMARY KEY AUTO_INCREMENT, prod_name varchar(30) NOT NULL, prod_brand varchar(30), prod_sector varchar(30));
+
+CREATE TABLE Supermarket(sm_id int(4) PRIMARY KEY AUTO_INCREMENT, sm_name varchar(30) NOT NULL, sm_product int(4), sm_prodPrice DECIMAL(10, 2), FOREIGN KEY(sm_product) REFERENCES Product(prod_id));
+
+MariaDB [xxxx]> SHOW COLUMNS FROM Product;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| prod_id     | int(4)      | NO   | PRI | NULL    | auto_increment |
+| prod_name   | varchar(30) | NO   |     | NULL    |                |
+| prod_brand  | varchar(30) | YES  |     | NULL    |                |
+| prod_sector | varchar(30) | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0,002 sec)
+
+MariaDB [xxxx]> SHOW COLUMNS FROM Supermarket;
++--------------+---------------+------+-----+---------+----------------+
+| Field        | Type          | Null | Key | Default | Extra          |
++--------------+---------------+------+-----+---------+----------------+
+| sm_id        | int(4)        | NO   | PRI | NULL    | auto_increment |
+| sm_name      | varchar(30)   | NO   |     | NULL    |                |
+| sm_product   | int(4)        | YES  | MUL | NULL    |                |
+| sm_prodPrice | decimal(10,2) | YES  |     | NULL    |                |
++--------------+---------------+------+-----+---------+----------------+
+4 rows in set (0,002 sec)
