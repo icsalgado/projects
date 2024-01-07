@@ -1,0 +1,11 @@
+MariaDB [xxxx]> show columns from colecao;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int(4)      | NO   |     | NULL    |       |
+| marca  | varchar(30) | NO   |     | NULL    |       |
+| modelo | varchar(50) | NO   |     | NULL    |       |
+| ano    | int(4)      | NO   |     | NULL    |       |
+| cor    | varchar(20) | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0,002 sec)
