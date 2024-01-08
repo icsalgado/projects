@@ -8,12 +8,16 @@
 </head>
 
 
-<?php //esse array vai ser substituido pelos dados do banco
-    $items = array(
-        array('id' => 1, 'Marca' => 'Dodge', 'Modelo' => 'Hemi Challenger', 'Ano' => 1970, 'Cor' => 'Laranja'),
-        array('id' => 2, 'Marca' => 'Mitsubishi', 'Modelo' => 'Eclipse Spider', 'Ano' => 2004, 'Cor' => 'Cinza'),
-        array('id' => 3, 'Marca' => 'Buick ', 'Modelo' => 'Riviera', 'Ano' => 1964, 'Cor' => 'Preto')
-    );
+<?php
+
+    require './conn.php';
+    
+    $items = [];
+
+    $sql = $pdo->query('SELECT * FROM colecao');
+    if($sql->rowCount() > 0){//verifica se tem usuario cadastrado
+        $items = $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
 ?>
 
 
