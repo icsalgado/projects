@@ -22,7 +22,7 @@
 
         $product = [];
 
-        $sql = $pdo->query('SELECT prod_name, prod_brand, sm_name, sm_prodPrice FROM Product INNER JOIN Supermarket on prod_id = sm_product');
+        $sql = $pdo->query('SELECT prod_name, prod_brand, sm_name, sm_prodPrice FROM Product INNER JOIN Supermarket on prod_id = sm_product ORDER BY prod_name');
         if($sql->rowCount() > 0){//verifica se tem usuario cadastrado
             $product = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
