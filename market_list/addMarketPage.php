@@ -51,6 +51,8 @@
             <input type="text" name="sm_name"/>
             <p>Preço: </p>
             <input type="text" name="sm_prodPrice"/>
+            <p>Observações: </p>
+            <textarea name="sm_notes"></textarea>
             <br><br><p><input type="submit" value="Cadastrar" /></p>
                 
         </form>
