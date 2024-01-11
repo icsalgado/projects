@@ -34,6 +34,7 @@
         <th>Marca</th>
         <th>Mercado</th>
         <th>Preço</th>
+        <th></th>
         </tr>
     </thead>
     <tbody>
@@ -43,6 +44,10 @@
                     foreach ($rows as $info) { //para cada item do array de dentro cria uma coluna
                         echo '<td>' . $info . '</td>';
                 }
+                echo '<td>    
+                        <a href="#">[Editar]</a> 
+                        <a href="#">[Excluir]</a>
+                    </td>';
                 echo '</tr>';
             }
         ?>
