@@ -14,9 +14,13 @@
             <input type="text" name="prod_name"/>
             <p>Marca: </p>
             <input type="text" name="prod_brand"/>
-            <p>Setor:</p>
-            <input type="text" name="prod_sector"/>
-            <br><br><p><input type="submit" value="Próximo" /></p>
+            <p>Mercado:</p>
+            <input type="text" name="prod_market"/>
+            <p>Preço:</p>
+            <input type="text" name="prod_price"/>
+            <p>Observações: </p>
+            <textarea name="prod_notes"></textarea>
+            <br><br><p><input type="submit" value="Cadastrar" /></p>
                 
         </form>
     </div>

@@ -22,7 +22,7 @@
 
         $product = [];
 
-        $sql = $pdo->query('SELECT prod_name, prod_brand, sm_name, sm_prodPrice, sm_notes FROM Product INNER JOIN Supermarket on prod_id = sm_product ORDER BY prod_name, sm_prodPrice');
+        $sql = $pdo->query('SELECT * FROM ProductMarket');
         if($sql->rowCount() > 0){//verifica se tem usuario cadastrado
             $product = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -30,6 +30,7 @@
     <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
+        <th></th>
         <th>Produto</th>
         <th>Marca</th>
         <th>Mercado</th>
@@ -46,8 +47,7 @@
                         echo '<td>' . $info . '</td>';
                 }
                 echo '<td>    
-                        <a href="#">[Editar]</a> 
-                        <a href="#">[Excluir]</a>
+                        <a href="#">[Editar preço]</a> 
                     </td>';
                 echo '</tr>';
             }
