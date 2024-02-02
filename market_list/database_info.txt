@@ -1,15 +1,90 @@
-MariaDB [xxxx]> create table ProductMarket (prod_id int(4) auto_increment primary key, prod_name varchar(30) not null, prod_brand varchar(30), prod_market varchar(30), prod_price decimal(10, 2), prod_notes varchar(50));
-Query OK, 0 rows affected (0,009 sec)
+MariaDB [xxxx]> CREATE TABLE Products (prod_id int(4) AUTO_INCREMENT PRIMARY KEY, prod_name varchar(30) NOT NULL, prod_brand varchar(20));
+Query OK, 0 rows affected (0,008 sec)
 
-MariaDB [xxxx]> show columns from ProductMarket;
-+-------------+---------------+------+-----+---------+----------------+
-| Field       | Type          | Null | Key | Default | Extra          |
-+-------------+---------------+------+-----+---------+----------------+
-| prod_id     | int(4)        | NO   | PRI | NULL    | auto_increment |
-| prod_name   | varchar(30)   | NO   |     | NULL    |                |
-| prod_brand  | varchar(30)   | YES  |     | NULL    |                |
-| prod_market | varchar(30)   | YES  |     | NULL    |                |
-| prod_price  | decimal(10,2) | YES  |     | NULL    |                |
-| prod_notes  | varchar(50)   | YES  |     | NULL    |                |
-+-------------+---------------+------+-----+---------+----------------+
-6 rows in set (0,003 sec)
+MariaDB [xxxx]> SHOW COLUMNS FROM Products;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| prod_id    | int(4)      | NO   | PRI | NULL    | auto_increment |
+| prod_name  | varchar(30) | NO   |     | NULL    |                |
+| prod_brand | varchar(20) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+3 rows in set (0,002 sec)
+
+MariaDB [xxxxx]> CREATE TABLE Market (mkt_id int(4) AUTO_INCREMENT PRIMARY KEY, mkt_name varchar(30) NOT NULL);
+Query OK, 0 rows affected (0,004 sec)
+
+MariaDB [xxxxx]> SHOW COLUMNS FROM Market;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| mkt_id   | int(4)      | NO   | PRI | NULL    | auto_increment |
+| mkt_name | varchar(30) | NO   |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+2 rows in set (0,002 sec)
+
+MariaDB [xxxx]> CREATE TABLE Price (pr_id int(4) AUTO_INCREMENT PRIMARY KEY, pr_prod_id int(4), pr_mkt_id int(4), pr_price decimal(10, 2), pr_notes varchar(50), FOREIGN KEY (pr_prod_id) REFERENCES Products(prod_id), FOREIGN KEY (pr_mkt_id) REFERENCES Market(mkt_id));
+Query OK, 0 rows affected (0,008 sec)
+
+MariaDB [xxxx]> SHOW COLUMNS FROM Price;
++------------+---------------+------+-----+---------+----------------+
+| Field      | Type          | Null | Key | Default | Extra          |
++------------+---------------+------+-----+---------+----------------+
+| pr_id      | int(4)        | NO   | PRI | NULL    | auto_increment |
+| pr_prod_id | int(4)        | YES  | MUL | NULL    |                |
+| pr_mkt_id  | int(4)        | YES  | MUL | NULL    |                |
+| pr_price   | decimal(10,2) | YES  |     | NULL    |                |
+| pr_notes   | varchar(50)   | YES  |     | NULL    |                |
++------------+---------------+------+-----+---------+----------------+
+5 rows in set (0,002 sec)
+
+______________________________________________________________________
+
+INSERT INTO Products (prod_name, prod_brand) VALUES ('Areia higiênica', 'Pipicat');
+INSERT INTO Products (prod_name, prod_brand) VALUES ('Sachê azul', 'Purina One');
+INSERT INTO Market (mkt_name) VALUES ('Zaffari Teresopolis');
+INSERT INTO Market (mkt_name) VALUES ('Carrefour Albion');
+INSERT INTO Market (mkt_name) VALUES ('Atacadão Vila Nova');
+INSERT INTO Price (pr_prod_id, pr_mkt_id, pr_price) VALUES (1, 1, 14.99);
+INSERT INTO Price (pr_prod_id, pr_mkt_id, pr_price) VALUES (1, 2, 18.99);
+INSERT INTO Price (pr_prod_id, pr_mkt_id, pr_price) VALUES (1, 3, 12.99);
+INSERT INTO Price (pr_prod_id, pr_mkt_id, pr_price) VALUES (2, 1, 5.49);
+INSERT INTO Price (pr_prod_id, pr_mkt_id, pr_price) VALUES (2, 2, 6.49);
+INSERT INTO Price (pr_prod_id, pr_mkt_id, pr_price) VALUES (2, 3, 7.49);
+
+MariaDB [xxxx]> SELECT prod_name, prod_brand, mkt_name, pr_price FROM Products AS p INNER JOIN Price as pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id;
++------------------+------------+---------------------+----------+
+| prod_name        | prod_brand | mkt_name            | pr_price |
++------------------+------------+---------------------+----------+
+| Areia higiênica  | Pipicat    | Zaffari Teresopolis |    14.99 |
+| Areia higiênica  | Pipicat    | Carrefour Albion    |    18.99 |
+| Areia higiênica  | Pipicat    | Atacadão Vila Nova  |    12.99 |
+| Sache Azul       | Purina One | Zaffari Teresopolis |     5.49 |
+| Sache Azul       | Purina One | Carrefour Albion    |     6.49 |
+| Sache Azul       | Purina One | Atacadão Vila Nova  |     7.49 |
++------------------+------------+---------------------+----------+
+6 rows in set (0,001 sec)
+
+
+______________________________________________________________________
+
+menor valor por produto:
+SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id;
+
+mercado com menor valor por produto:
+SELECT prod_name, prod_brand, mkt_name, pr_price FROM Products AS p INNER JOIN Price AS pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id INNER JOIN (SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id) AS min_prices ON pr.pr_prod_id = min_prices.pr_prod_id AND pr.pr_price = min_prices.min_price;
+
+______________________________________________________________________
+
+MariaDB [xxxx]> SELECT prod_name, prod_brand, mkt_name, pr_price FROM Products AS p INNER JOIN Price AS pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id INNER JOIN (SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id) AS min_prices ON pr.pr_prod_id = min_prices.pr_prod_id AND pr.pr_price = min_prices.min_price;
++------------------+------------+---------------------+----------+
+| prod_name        | prod_brand | mkt_name            | pr_price |
++------------------+------------+---------------------+----------+
+| Areia higiênica  | Pipicat    | Atacadão Vila Nova  |    12.99 |
+| Sache Azul       | Purina One | Zaffari Teresopolis |     5.49 |
++------------------+------------+---------------------+----------+
+2 rows in set (0,003 sec)
+
+______________________________________________________________________
+
+UPDATE Price SET pr_price = 10.99, pr_notes = 'Na compra de 6 pacotes' WHERE pr_mkt_id = 3;
