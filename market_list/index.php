@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE php>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,29 +8,22 @@
     
 </head>
 <body>
-
-    <div>
-        <br>
-        <a href='./addProductPage.php'>
-        <button type="button" class="btn btn-primary">Adicionar Produto</button>
-        </a>
-        <br><br>
-    </div>
-
+    <h1>Lista de mercado com melhores preços</h1>
+    
     <?php
         require './conn.php';
 
         $product = [];
 
-        $sql = $pdo->query('SELECT * FROM ProductMarket');
-        if($sql->rowCount() > 0){//verifica se tem usuario cadastrado
+        $sql = $pdo->query('SELECT prod_name, prod_brand, mkt_name, pr_price, pr_notes FROM Products AS p INNER JOIN Price AS pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id INNER JOIN (SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id) AS min_prices ON pr.pr_prod_id = min_prices.pr_prod_id AND pr.pr_price = min_prices.min_price ORDER BY mkt_name');
+        
+        if($sql->rowCount() > 0){
             $product = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
     ?>
     <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
-        <th></th>
         <th>Produto</th>
         <th>Marca</th>
         <th>Mercado</th>
@@ -47,12 +40,20 @@
                         echo '<td>' . $info . '</td>';
                 }
                 echo '<td>    
-                        <a href="#">[Editar preço]</a> 
+                        <a href="./updatePrice.php"><img src="sync.png" width=30> </a> 
                     </td>';
                 echo '</tr>';
             }
         ?>
     </tbody>
     </table>
+
+    <div>
+        <br>
+        <a href='./addProductPage.php'>
+        <button type="button" class="btn btn-primary">Adicionar informações</button>
+        </a>
+        <br><br>
+    </div>
 </body>
 </html>

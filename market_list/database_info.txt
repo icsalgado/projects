@@ -72,7 +72,7 @@ menor valor por produto:
 SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id;
 
 mercado com menor valor por produto:
-SELECT prod_name, prod_brand, mkt_name, pr_price FROM Products AS p INNER JOIN Price AS pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id INNER JOIN (SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id) AS min_prices ON pr.pr_prod_id = min_prices.pr_prod_id AND pr.pr_price = min_prices.min_price;
+SELECT prod_name, prod_brand, mkt_name, pr_price FROM Products AS p INNER JOIN Price AS pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id INNER JOIN (SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id) AS min_prices ON pr.pr_prod_id = min_prices.pr_prod_id AND pr.pr_price = min_prices.min_price ORDER BY mkt_name;
 
 ______________________________________________________________________
 
