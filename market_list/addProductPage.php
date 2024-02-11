@@ -5,7 +5,7 @@
 
     $product = [];
 
-    $sql = $pdo->query('SELECT * FROM Products');
+    $sql = $pdo->query('SELECT * FROM Products ORDER BY prod_id DESC');
     
     if($sql->rowCount() > 0){
         $product = $sql->fetchAll(PDO::FETCH_ASSOC);
