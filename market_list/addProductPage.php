@@ -19,6 +19,7 @@
         $market = $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 ?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -89,7 +90,6 @@
     </div>
     <div>
         <h2>Mercados</h2>
-
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -110,7 +110,6 @@
         </table>
 
         <h2>Produtos</h2>
-
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>

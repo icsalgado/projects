@@ -10,6 +10,13 @@
 <body>
     <h1>Lista de mercado com melhores preços</h1>
     
+    <div class="row" style="float: right; margin-right: 10px;">
+        <form method="get" action="searchProduct.php" >
+            <input type="text" name="searched">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+
     <?php
         require './conn.php';
 
