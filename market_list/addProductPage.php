@@ -30,7 +30,7 @@
 </head>
 <body>
     <div>
-        <h2>Adicionar Informações <a href="./index.php"><img src="./back.png" width=20></a></h2>
+        <h2>Adicionar Informações <a href="./index.php"><img src="./back.png" width=30></a></h2>
         <br>
         <form method="POST" action="addProduct.php">
 

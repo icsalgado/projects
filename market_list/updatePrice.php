@@ -1,11 +1,12 @@
-<!DOCTYPE php>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    update <a href="./index.php"><img src="./back.png" width=20></a>
-</body>
-</html>
+<?php
+    require './conn.php';//chama a conexão do banco
+
+    $pr_notes = ucwords(strtolower(filter_input(INPUT_POST,'notes', FILTER_SANITIZE_SPECIAL_CHARS)));
+    $pr_price = filter_var($_POST['price'], FILTER_VALIDATE_FLOAT);
+    $pr_id = (int)$_POST['pr_id'];
+
+    $sql = $pdo->query("UPDATE Price SET pr_notes = '$pr_notes', pr_price = $pr_price WHERE pr_id = $pr_id");
+
+    header('Location: index.php');
+    exit;
+?>

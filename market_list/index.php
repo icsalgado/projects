@@ -1,4 +1,17 @@
 <!DOCTYPE php>
+
+<?php
+    require './conn.php';
+
+    $product = [];
+
+    $sql = $pdo->query('SELECT prod_name, prod_brand, mkt_name, pr_price, pr_notes FROM Products AS p INNER JOIN Price AS pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id INNER JOIN (SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id) AS min_prices ON pr.pr_prod_id = min_prices.pr_prod_id AND pr.pr_price = min_prices.min_price ORDER BY mkt_name');
+    
+    if($sql->rowCount() > 0){
+        $product = $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
+?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,17 +30,6 @@
         </form>
     </div>
 
-    <?php
-        require './conn.php';
-
-        $product = [];
-
-        $sql = $pdo->query('SELECT prod_name, prod_brand, mkt_name, pr_price, pr_notes FROM Products AS p INNER JOIN Price AS pr ON p.prod_id = pr.pr_prod_id INNER JOIN Market AS m ON pr.pr_mkt_id = m.mkt_id INNER JOIN (SELECT pr.pr_prod_id, MIN(pr.pr_price) AS min_price FROM Price AS pr GROUP BY pr.pr_prod_id) AS min_prices ON pr.pr_prod_id = min_prices.pr_prod_id AND pr.pr_price = min_prices.min_price ORDER BY mkt_name');
-        
-        if($sql->rowCount() > 0){
-            $product = $sql->fetchAll(PDO::FETCH_ASSOC);
-        }
-    ?>
     <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
@@ -36,7 +38,6 @@
         <th>Mercado</th>
         <th>Preço</th>
         <th>OBS</th>
-        <th></th>
         </tr>
     </thead>
     <tbody>
@@ -46,10 +47,6 @@
                     foreach ($rows as $info) { //para cada item do array de dentro cria uma coluna
                         echo '<td>' . $info . '</td>';
                 }
-                echo '<td>    
-                        <a href="./updatePrice.php"><img src="sync.png" width=30> </a> 
-                    </td>';
-                echo '</tr>';
             }
         ?>
     </tbody>
